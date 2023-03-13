@@ -1,9 +1,12 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import login, logout, authenticate
 
-from .forms import RegisterForm
+
+from .forms import Register, LoginForm
 from .models import Ad
 
+from django.contrib.auth.forms import AuthenticationForm
 
 # Create your views here.
 
@@ -25,60 +28,26 @@ def get_ad(request, adid):
     return render(request, 'ad_show.html', context)
 
 # Login page
-def login_page(request):
-
-    return render(request, 'login.html')
-
-# Register page
-def register_page(request):
-
-    return render(request, 'register.html')
-
-
-def user_register(request):
-    # if this is a POST request we need to process the form data
-    template = 'mymodule/register.html'
-
+def login_form(request):
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = RegisterForm(request.POST)
-        # check whether it's valid:
+        form = LoginForm(data=request.POST)
         if form.is_valid():
-            if User.objects.filter(username=form.cleaned_data['username']).exists():
-                return render(request, template, {
-                    'form': form,
-                    'error_message': 'Username already exists.'
-                })
-            elif User.objects.filter(email=form.cleaned_data['email']).exists():
-                return render(request, template, {
-                    'form': form,
-                    'error_message': 'Email already exists.'
-                })
-            elif form.cleaned_data['password'] != form.cleaned_data['password_repeat']:
-                return render(request, template, {
-                    'form': form,
-                    'error_message': 'Passwords do not match.'
-                })
-            else:
-                # Create the user:
-                user = User.objects.create_user(
-                    form.cleaned_data['username'],
-                    form.cleaned_data['email'],
-                    form.cleaned_data['password']
-                )
-                user.first_name = form.cleaned_data['first_name']
-                user.last_name = form.cleaned_data['last_name']
-                user.phone_number = form.cleaned_data['phone_number']
-                user.save()
-
-                # Login the user
-                login(request, user)
-
-                # redirect to accounts page:
-                return HttpResponseRedirect('/mymodule/account')
-
-    # No post data availabe, let's just show the page.
+            usuario = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            if usuario is not None:
+                login(request, usuario)
+                return redirect('home')
     else:
-        form = RegisterForm()
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
-    return render(request, template, {'form': form})
+
+def register_form(request):
+    if request.method == 'POST':
+        form = Register(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = Register()
+    return render(request, 'register.html', {'form': form})

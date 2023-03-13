@@ -11,12 +11,9 @@ def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
 class UserInfo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.TextField(null=True)
-    avatar = models.FileField(upload_to=user_directory_path)
-
-
-
+    avatar = models.FileField(upload_to=user_directory_path, null=True)
 
 # Class Ad
 class Ad(models.Model):
@@ -25,8 +22,6 @@ class Ad(models.Model):
     image = models.TextField(null=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     id_ad_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse('ad-details', kwargs={'adid':self.id})
@@ -40,5 +35,3 @@ class Comment(models.Model):
     id_comment_ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
     id_comment_user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)

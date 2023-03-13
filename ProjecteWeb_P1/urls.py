@@ -18,10 +18,9 @@ from django.urls import path
 from Wallapop import views
 
 urlpatterns = [
-    path('', views.ads_list_view),
+    path('', views.ads_list_view, name='home'),
     path('admin/', admin.site.urls),
-    path('login/', views.login_page),
-    path('register/', views.register_page),
+    path('login/', views.login_form),
+    path('register/', views.register_form),
     path('ad/<int:adid>/', views.get_ad, name='ad-details'),
-
 ]
