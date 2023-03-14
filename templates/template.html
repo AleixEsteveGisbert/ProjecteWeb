@@ -29,12 +29,18 @@
       <!-- Left links -->
 
       <div class="d-flex align-items-center">
-        <a role="button" href="/login" type="button" class="btn btn-link px-3 me-2">
+          {% if user.is_authenticated %}
+    <img class="rounded-circle shadow-4-strong" alt="avatar2" src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" />
+
+    {% else %}
+    <a role="button" href="/login" type="button" class="btn btn-link px-3 me-2">
           Entrar
         </a>
         <a role="button" href="/register" type="button" class="btn btn-primary me-3">
           Registrar-se
         </a>
+    {% endif %}
+
       </div>
     </div>
     <!-- Collapsible wrapper -->

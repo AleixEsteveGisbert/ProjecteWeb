@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login_form),
     path('register/', views.register_form),
-    path('ad/<int:adid>/', views.get_ad, name='ad-details'),
+    path('ad/<int:ad_id>/', views.get_ad, name='ad-details'),
 ]

@@ -1,19 +1,21 @@
 from django.db import models
 
-
 # Create your models here.
 # Class user
 from django.urls import reverse
 from django.contrib.auth.models import User
 
+
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
+
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.TextField(null=True)
     avatar = models.FileField(upload_to=user_directory_path, null=True)
+
 
 # Class Ad
 class Ad(models.Model):
@@ -24,7 +26,7 @@ class Ad(models.Model):
     id_ad_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('ad-details', kwargs={'adid':self.id})
+        return reverse('ad-details', kwargs={'ad_id': self.id})
 
     def __str__(self):
         return self.product_name + ' - ' + str(self.price)
