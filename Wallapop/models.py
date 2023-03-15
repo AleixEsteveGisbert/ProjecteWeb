@@ -10,18 +10,21 @@ def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
+def ads_directory(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/ads/<filename>
+    return 'ads/{0}'.format(filename)
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.TextField(null=True)
-    avatar = models.FileField(upload_to=user_directory_path, null=True)
+    avatar = models.ImageField(upload_to=user_directory_path, null=True)
 
 
 # Class Ad
 class Ad(models.Model):
     product_name = models.TextField()
     description = models.TextField(null=True)
-    image = models.TextField(null=True)
+    image = models.ImageField(upload_to=ads_directory, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     id_ad_user = models.ForeignKey(User, on_delete=models.CASCADE)
 

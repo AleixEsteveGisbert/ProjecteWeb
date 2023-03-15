@@ -1,0 +1,12 @@
+{% extends "template.html" %}
+
+{% block content %}
+
+    <h2>Crear nou anunci</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+      <a role="button" href="/" class="btn btn-outline-secondary" >Cancelar</a>
+    <button class="btn btn-primary" type="submit">Crear</button>
+  </form>
+{% endblock %}

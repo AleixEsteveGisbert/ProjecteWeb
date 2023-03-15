@@ -1,12 +1,13 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, logout, authenticate
 
-
-from .forms import Register, LoginForm
+from .forms import LoginForm, NewAdForm, RegisterForm
 from .models import Ad
 
 from django.contrib.auth.forms import AuthenticationForm
+
 
 # Create your views here.
 
@@ -18,21 +19,24 @@ def ads_list_view(request):
     }
     return render(request, 'index.html', context)
 
+
 # Info of an ad
-def get_ad(request, adid):
-    obj = get_object_or_404(Ad, id=adid)
+def get_ad(request, ad_id):
+    obj = get_object_or_404(Ad, id=ad_id)
 
     context = {
         'ad': obj,
     }
     return render(request, 'ad_show.html', context)
 
+
 # Login page
 def login_form(request):
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            usuario = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            usuario = authenticate(request, username=form.cleaned_data['username'],
+                                   password=form.cleaned_data['password'])
             if usuario is not None:
                 login(request, usuario)
                 return redirect('home')
@@ -43,11 +47,29 @@ def login_form(request):
 
 def register_form(request):
     if request.method == 'POST':
-        form = Register(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('home')
     else:
-        form = Register()
+        form = RegisterForm()
     return render(request, 'register.html', {'form': form})
+
+
+@login_required(login_url='login')
+def ad_new(request):
+    if request.method == 'POST':
+        form = NewAdForm(request.POST, request.FILES)
+        if form.is_valid():
+            ad = form.save(commit=False)
+            ad.id_ad_user = request.user
+            ad.save()
+            return redirect('home')
+    else:
+        form = NewAdForm()
+    return render(request, 'ad_new.html', {'form': form})
+
+
+def user_profile(request):
+    return render(request, 'user_profile.html')

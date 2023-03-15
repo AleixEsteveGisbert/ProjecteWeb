@@ -15,28 +15,38 @@
   <div class="container">
     <!-- Navbar brand -->
     <a class="navbar-brand me-2" href="/">
-        Menú
+        {% load static %}
+        <img class="" width="100" alt="logo" src="{% static 'Wallapop.png' %}" />
     </a>
 
     <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse">
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href=""></a>
-        </li>
+
       </ul>
       <!-- Left links -->
 
       <div class="d-flex align-items-center">
           {% if user.is_authenticated %}
-    <img class="rounded-circle shadow-4-strong" alt="avatar2" src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" />
+
+<div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ MEDIA_URL }}avatars/default_avatar.png" alt="avatar_img" width="32" height="32" class="rounded-circle shadow-4-strong">
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+            <li><a class="dropdown-item" href="{% url 'profile' %}">El meu perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'logout'%}">Tanca la sessió</a></li>
+          </ul>
+        </div>
 
     {% else %}
-    <a role="button" href="/login" type="button" class="btn btn-link px-3 me-2">
+
+    <a role="button" href="{% url 'login'%}" type="button" class="btn btn-outline-primary px-3 me-2">
           Entrar
         </a>
-        <a role="button" href="/register" type="button" class="btn btn-primary me-3">
+        <a role="button" href="{% url 'register'%}" type="button" class="btn btn-primary me-3">
           Registrar-se
         </a>
     {% endif %}
@@ -48,11 +58,22 @@
   <!-- Container wrapper -->
 </nav>
 <!-- Navbar -->
+<div class="container-fluid">
+   <div class="row content">
+    <div class="col-sm-3 sidenav">
+        <div class="ml-1 mt-3">
+            <a role="button" type="button" class="btn btn-outline-primary" href="/new">Crear un anunci </a>
+        </div>
+        <div class="ml-1 mt-3">
+            <button type="button" class="btn btn-primary">Els meus anuncis <span class="badge">14</span></button>
+        </div>
 
-    <div class="container">
+
+    </div>
+    <div class="col-sm-9">
             {% block content %}{% endblock %}
     </div>
-
+   </div>
     <footer>
         <div class="container">
             <div class="row well ml-t">

@@ -16,11 +16,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Wallapop import views
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth.views import LogoutView
+
+
 
 urlpatterns = [
     path('', views.ads_list_view, name='home'),
     path('admin/', admin.site.urls),
-    path('login/', views.login_form),
-    path('register/', views.register_form),
-    path('ad/<int:ad_id>/', views.get_ad, name='ad-details'),
+    path('login/', views.login_form, name='login'),
+    path('logout/', LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
+    path('register', views.register_form, name='register'),
+    path('profile', views.user_profile, name='profile'),
+    path('ad/<int:ad_id>', views.get_ad, name='ad-details'),
+    path('new', views.ad_new, name='ad-new'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
