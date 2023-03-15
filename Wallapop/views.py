@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, logout, authenticate
 
 from .forms import LoginForm, NewAdForm, RegisterForm
-from .models import Ad
+from .models import Ad, Comment
 
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -22,10 +22,12 @@ def ads_list_view(request):
 
 # Info of an ad
 def get_ad(request, ad_id):
-    obj = get_object_or_404(Ad, id=ad_id)
+    ad = get_object_or_404(Ad, id=ad_id)
+    comments = Comment(id_comment_ad=ad)
 
     context = {
-        'ad': obj,
+        'ad': ad,
+        'comments': comments,
     }
     return render(request, 'ad_show.html', context)
 

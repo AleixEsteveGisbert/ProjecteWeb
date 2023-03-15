@@ -18,14 +18,20 @@
       <br><br>
 
       <div class="row">
+      {% if comments %}
+          {% for c in comments %}
         <div class="col-sm-2 text-center">
           <img src="{{ MEDIA_URL }}/avatars/default_avatar.png" class="img-circle" height="65" width="65" alt="Avatar">
         </div>
         <div class="col-sm-10">
           <h4>Kevin <small>Sep 29, 2015, 9:12 PM</small></h4>
-          <p>Molt bon producte!</p>
+          <p>{{ c.comment }}</p>
           <br>
         </div>
+          {% endfor %}
+          {% else %}
+          <p>No hi ha comentaris</p>
+      {% endif %}
       </div>
         </div>
       </div>
