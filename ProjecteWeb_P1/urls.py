@@ -31,6 +31,7 @@ urlpatterns = [
     path('profile', views.user_profile, name='profile'),
     path('ad/<int:ad_id>', views.get_ad, name='ad-details'),
     path('new', views.ad_new, name='ad-new'),
+    path('user/<int:user_id>/ads', views.get_userAdds, name='user-ads'),
 ]
 
 if settings.DEBUG:

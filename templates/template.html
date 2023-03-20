@@ -65,7 +65,7 @@
             <a role="button" type="button" class="btn btn-outline-primary" href="/new">Crear un anunci </a>
         </div>
         <div class="ml-1 mt-3">
-            <button type="button" class="btn btn-primary">Els meus anuncis <span class="badge">14</span></button>
+            <a role="button" type="button" class="btn btn-primary" href="user/{{ user.id }}/ads">Els meus anuncis <span class="badge">{{ user.get_user_ad_count }}</span></a>
         </div>
 
 

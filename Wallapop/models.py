@@ -1,3 +1,4 @@
+from django.contrib import auth
 from django.db import models
 
 # Create your models here.
@@ -42,3 +43,8 @@ class Comment(models.Model):
     id_comment_user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
+
+def get_user_ad_count(self):
+    return self.ad_set.all().count()
+
+auth.models.User.add_to_class('get_user_ad_count', get_user_ad_count)

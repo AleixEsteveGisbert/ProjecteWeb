@@ -57,3 +57,7 @@ class AddComment(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['comment']
+
+class EditProfile(forms.ModelForm):
+    class Meta:
+        pass

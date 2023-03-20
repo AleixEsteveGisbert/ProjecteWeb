@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, logout, authenticate
@@ -89,3 +90,13 @@ def ad_new(request):
 
 def user_profile(request):
     return render(request, 'user_profile.html')
+
+def get_userAdds(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    ads = user.ad_set.all()
+
+    context = {
+        'ads': ads,
+    }
+
+    return render(request, 'user_ads.html', context)
