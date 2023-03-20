@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, logout, authenticate
 
-from .forms import LoginForm, NewAdForm, RegisterForm
+from .forms import LoginForm, NewAdForm, RegisterForm, AddComment
 from .models import Ad, Comment
 
 from django.contrib.auth.forms import AuthenticationForm
@@ -25,10 +25,24 @@ def get_ad(request, ad_id):
     ad = get_object_or_404(Ad, id=ad_id)
     comments = ad.comment_set.all()
 
+
+
+    if request.method == 'POST':
+        form = AddComment(request.POST)
+        if form.is_valid():
+            c = form.save(commit=False)
+            c.id_comment_user = request.user
+            c.id_comment_ad = ad
+            c.save()
+    else:
+        form = AddComment()
+
     context = {
         'ad': ad,
         'comments': comments,
+        'form': form,
     }
+
     return render(request, 'ad_show.html', context)
 
 

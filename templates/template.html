@@ -32,7 +32,7 @@
 
 <div class="dropdown text-end">
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ MEDIA_URL }}avatars/default_avatar.png" alt="avatar_img" width="32" height="32" class="rounded-circle shadow-4-strong">
+            <img src="{{ MEDIA_URL }}/{{ user.userinfo.avatar }}" alt="avatar_img" width="32" height="32" class="rounded-circle shadow-4-strong">
           </a>
           <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
             <li><a class="dropdown-item" href="{% url 'profile' %}">El meu perfil</a></li>

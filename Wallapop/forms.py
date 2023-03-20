@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from Wallapop.models import UserInfo, Ad
+from Wallapop.models import UserInfo, Ad, Comment
 
 
 class RegisterForm(UserCreationForm):
@@ -52,3 +52,8 @@ class UserInfoForm(forms.ModelForm):
     class Meta:
         model = UserInfo
         fields = ['description', 'avatar']
+
+class AddComment(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment']
