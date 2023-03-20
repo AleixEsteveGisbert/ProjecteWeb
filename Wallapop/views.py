@@ -23,7 +23,7 @@ def ads_list_view(request):
 # Info of an ad
 def get_ad(request, ad_id):
     ad = get_object_or_404(Ad, id=ad_id)
-    comments = Comment(id_comment_ad=ad)
+    comments = ad.comment_set.all()
 
     context = {
         'ad': ad,

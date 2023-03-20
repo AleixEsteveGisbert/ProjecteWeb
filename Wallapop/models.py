@@ -4,6 +4,7 @@ from django.db import models
 # Class user
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 def user_directory_path(instance, filename):
@@ -40,3 +41,4 @@ class Comment(models.Model):
     id_comment_ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
     id_comment_user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
