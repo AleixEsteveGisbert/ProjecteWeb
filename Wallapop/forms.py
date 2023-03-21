@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 
 from Wallapop.models import UserInfo, Ad, Comment
@@ -58,6 +58,12 @@ class AddComment(forms.ModelForm):
         model = Comment
         fields = ['comment']
 
-class EditProfile(forms.ModelForm):
+
+class EditProfileUser(PasswordChangeForm):
+    pass
+
+class EditProfileUserInfo(forms.ModelForm):
+    avatar = forms.ImageField(required=False)
     class Meta:
-        pass
+        model = UserInfo
+        fields = ['avatar', 'description']

@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, logout, authenticate
 
-from .forms import LoginForm, NewAdForm, RegisterForm, AddComment
-from .models import Ad, Comment
+from .forms import LoginForm, NewAdForm, RegisterForm, AddComment, EditProfileUser, EditProfileUserInfo
+from .models import Ad, Comment, UserInfo
 
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -87,10 +87,6 @@ def ad_new(request):
         form = NewAdForm()
     return render(request, 'ad_new.html', {'form': form})
 
-
-def user_profile(request):
-    return render(request, 'user_profile.html')
-
 def get_userAdds(request, user_id):
     user = get_object_or_404(User, id=user_id)
     ads = user.ad_set.all()
@@ -100,3 +96,21 @@ def get_userAdds(request, user_id):
     }
 
     return render(request, 'user_ads.html', context)
+
+@login_required(login_url='login')
+def edit_profile(request):
+    userinfo = request.user.userinfo
+
+    if request.method == 'POST':
+        form = EditProfileUser(user=request.user, data=request.POST)
+        form1 = EditProfileUserInfo(request.POST, request.FILES, instance=userinfo)
+
+        if form.is_valid() & form1.is_valid():
+            form.save()
+            form1.save()
+            return redirect('home')
+    else:
+        form = EditProfileUser(user=request.user)
+        form1 = EditProfileUserInfo(instance=userinfo)
+
+    return render(request, 'user_profile.html', {'form': form, 'form1': form1})

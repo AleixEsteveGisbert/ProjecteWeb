@@ -2,10 +2,11 @@
 
 {% block content %}
     <h2>Hola, {{ user.username }}</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-
-      <a role="button" href="/" class="btn btn-outline-secondary" >Cancelar</a>
-    <button class="btn btn-primary" type="submit">Guardar</button>
-  </form>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ form1.as_p }}
+        <a role="button" href="/" class="btn btn-outline-secondary" >Cancelar</a>
+        <button class="btn btn-primary" type="submit">Guardar</button>
+    </form>
 {% endblock %}
