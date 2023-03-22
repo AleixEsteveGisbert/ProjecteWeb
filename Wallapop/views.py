@@ -33,6 +33,7 @@ def get_ad(request, ad_id):
             c.id_comment_user = request.user
             c.id_comment_ad = ad
             c.save()
+            return redirect(request.path)
     else:
         form = AddComment()
 

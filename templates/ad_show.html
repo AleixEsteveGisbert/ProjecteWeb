@@ -4,10 +4,12 @@
     <button class="btn btn-secondary" onclick="window.history.back()">Tornar</button>
     <h1>{{ ad.product_name }}</h1>
     <img width="300" src="{{ MEDIA_URL }}/{{ ad.image }}">
-    <p>{{ ad.price }}</p>
+    <h2>{{ ad.price }}</h2>
     <p>{{ ad.description }}</p>
+    <br><br>
     <div class="content">
     <div class="col-sm-9">
+    <hr class="hr" />
     {% if user.is_authenticated %}
       <h4>Afegeix un comentari:</h4>
       <form method="POST" role="form">
@@ -18,7 +20,7 @@
         <button type="submit" class="btn btn-outline-primary">Comentar</button>
       </form>
     {% else %}
-        <h4 ><a href="{% url 'login' %}">Inicia sessió per a afegir un comentari.</a></h4>
+        <h6 ><a href="{% url 'login' %}">Inicia sessió per a afegir un comentari.</a></h6>
     {% endif %}
       <br><br>
 

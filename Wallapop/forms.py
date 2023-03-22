@@ -54,6 +54,7 @@ class UserInfoForm(forms.ModelForm):
         fields = ['description', 'avatar']
 
 class AddComment(forms.ModelForm):
+    comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}))
     class Meta:
         model = Comment
         fields = ['comment']
