@@ -85,8 +85,7 @@ def ad_new(request):
         form = NewAdForm()
     return render(request, 'ad_new.html', {'form': form})
 
-
-def get_userAdds(request, user_id):
+def get_userAds(request, user_id):
     user = get_object_or_404(User, id=user_id)
     ads = user.ad_set.all()
 
@@ -114,3 +113,15 @@ def edit_profile(request):
         form1 = EditProfileUserInfo(instance=userinfo)
 
     return render(request, 'user_profile.html', {'form': form, 'form1': form1})
+
+def get_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    userinfo = get_object_or_404(UserInfo, user=user)
+
+    context = {
+        'user': user,
+        'avatar': userinfo.avatar,
+        'description': userinfo.description
+    }
+
+    return render(request, 'profile.html', context)

@@ -20,7 +20,7 @@ class RegisterForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         if commit:
             user.save()
-            userInfo = UserInfo.objects.create(user=user)
+            userInfo = UserInfo.objects.create(user=user, avatar='avatars/default_avatar.png')
         return user
 
 
