@@ -2,19 +2,19 @@
 
 {% block content %}
     <h1>Anuncis</h1>
-<div class="row row-cols-1 row-cols-md-3">
-    {% for ad in ads_objects %}
-  <div class="col mb-4">
-    <div class="card h-100">
-            {% load static %}
-          <img src="{{ MEDIA_URL }}/{{ ad.image }}" class="card-img-top" alt="Product image">
-          <div class="card-body">
-            <h5 class="card-title">{{ad.product_name}}</h5>
-            <p class="card-text">{{ad.description}}</p>
-            <a href="{{ ad.get_absolute_url }}" class="btn btn-primary">{{ad.price}}€</a>
-          </div>
-        </div>
-        </div>
-    {% endfor %}
-        </div>
+    <div class="row row-cols-1 row-cols-md-3">
+        {% for ad in ads_objects %}
+            <div class="col mb-4">
+                <div class="card h-100">
+                    {% load static %}
+                    <img src="{{ MEDIA_URL }}/{{ ad.image }}" class="card-img-top" alt="Product image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ad.product_name }}</h5>
+                        <p class="card-text">{{ ad.description }}</p>
+                        <a href="{{ ad.get_absolute_url }}" class="btn btn-primary">{{ ad.price }}€</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -1,0 +1,17 @@
+{% extends "template.html" %}
+{% block content %}
+    <h2>Eliminar l'anunci?</h2>
+    <div class="content pt-4">
+        <h1>{{ ad.product_name }}</h1>
+        <img width="300" src="{{ MEDIA_URL }}/{{ ad.image }}" alt="avatar">
+        <h2>{{ ad.price }}</h2>
+        <p>{{ ad.description }}</p>
+        <br>
+    </div>
+    <form method="POST">
+    {% csrf_token %}
+        <a role="button" onclick="window.history.back()" class="btn btn-secondary" >Cancelar</a>
+
+        <button class="btn btn-outline-danger" type="submit">Confirmar</button>
+    </form>
+{% endblock %}

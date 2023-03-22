@@ -31,7 +31,7 @@ class Ad(models.Model):
     id_ad_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('ad-details', kwargs={'ad_id': self.id})
+        return reverse('ad-show', kwargs={'ad_id': self.id})
 
     def __str__(self):
         return self.product_name + ' - ' + str(self.price)

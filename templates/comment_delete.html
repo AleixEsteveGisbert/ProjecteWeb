@@ -1,0 +1,11 @@
+{% extends "template.html" %}
+{% block content %}
+    <h2>Eliminar el comentari?</h2>
+<p>{{ comment.comment }}</p>
+    <form method="POST">
+    {% csrf_token %}
+        <a role="button" onclick="window.history.back()" class="btn btn-secondary" >Cancelar</a>
+
+        <button class="btn btn-outline-danger" type="submit">Confirmar</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <h2>Hola, {{ user.username }}</h2>
+    {% if form.field_name.errors %}
+        {% for error in form.field_name.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ form1.as_p }}
+        <a role="button" href="{% url 'profile' user_id=user.id %}" class="btn btn-outline-secondary">Cancelar</a>
+        <button class="btn btn-primary" type="submit">Guardar</button>
+    </form>
+{% endblock %}

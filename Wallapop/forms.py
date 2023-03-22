@@ -31,7 +31,7 @@ class LoginForm(AuthenticationForm):
         attrs={'class': 'form-control', 'placeholder': 'Contrasenya'}))
 
 
-class NewAdForm(forms.ModelForm):
+class AdForm(forms.ModelForm):
     product_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Nom del producte', 'class': 'form-control'}))
     description = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Descripció del producte', 'class': 'form-control'}))
     image = forms.ImageField()
@@ -68,3 +68,4 @@ class EditProfileUserInfo(forms.ModelForm):
     class Meta:
         model = UserInfo
         fields = ['avatar', 'description']
+

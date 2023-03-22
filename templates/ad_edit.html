@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+{% block content %}
+    <h2>Editar l'anunci: {{ ad.product_name }}</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+      <div>
+
+        <img alt="product image" src="{{ ad.image.url }}" width="200">
+
+    </div>
+    {{ form.as_p }}
+      <a role="button" onclick="window.history.back()" class="btn btn-outline-secondary" >Cancelar</a>
+    <button class="btn btn-primary" type="submit">Guardar</button>
+  </form>
+{% endblock %}
