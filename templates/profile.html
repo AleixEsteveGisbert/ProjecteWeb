@@ -1,0 +1,8 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <h2>Hola, {{ user.username }}</h2>
+    <h1>{{ user.username }}</h1>
+    <img src="{{ avatar.url }}" alt="Avatar">
+    <p>{{ description }}</p>
+{% endblock %}
