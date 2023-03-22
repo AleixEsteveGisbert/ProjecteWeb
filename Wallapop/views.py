@@ -26,8 +26,6 @@ def get_ad(request, ad_id):
     ad = get_object_or_404(Ad, id=ad_id)
     comments = ad.comment_set.all()
 
-
-
     if request.method == 'POST':
         form = AddComment(request.POST)
         if form.is_valid():
@@ -52,10 +50,10 @@ def login_form(request):
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            usuario = authenticate(request, username=form.cleaned_data['username'],
-                                   password=form.cleaned_data['password'])
-            if usuario is not None:
-                login(request, usuario)
+            user = authenticate(request, username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
                 return redirect('home')
     else:
         form = LoginForm()
@@ -87,6 +85,7 @@ def ad_new(request):
         form = NewAdForm()
     return render(request, 'ad_new.html', {'form': form})
 
+
 def get_userAdds(request, user_id):
     user = get_object_or_404(User, id=user_id)
     ads = user.ad_set.all()
@@ -96,6 +95,7 @@ def get_userAdds(request, user_id):
     }
 
     return render(request, 'user_ads.html', context)
+
 
 @login_required(login_url='login')
 def edit_profile(request):

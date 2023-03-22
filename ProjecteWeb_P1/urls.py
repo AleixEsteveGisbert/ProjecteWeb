@@ -20,8 +20,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
 
-
-
 urlpatterns = [
     path('', views.ads_list_view, name='home'),
     path('admin/', admin.site.urls),
