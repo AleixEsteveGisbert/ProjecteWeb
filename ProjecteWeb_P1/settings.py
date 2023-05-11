@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Wallapop.apps.WallapopConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
