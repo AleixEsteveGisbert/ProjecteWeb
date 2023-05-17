@@ -10,11 +10,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, default=UserSerializer())
-    ad = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=UserSerializer)
+
     class Meta:
         model = Comment
-        fields = ['id_comment_ad', 'id_comment_user', 'comment', 'created_at']
+        fields = ['id_comment_ad', 'comment', 'created_at', 'user']
 
 
 class AdSerializer(serializers.ModelSerializer):

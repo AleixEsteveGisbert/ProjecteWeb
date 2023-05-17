@@ -31,8 +31,7 @@ class Ad(models.Model):
     image = models.ImageField(upload_to=ads_directory, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     id_ad_user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    # created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def get_absolute_url(self):
         return reverse('ad-show', kwargs={'ad_id': self.id})

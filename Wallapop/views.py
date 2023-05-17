@@ -34,5 +34,9 @@ def index(request):
 def login(request):
     return render(request, 'index.html')
 
+
 def register(request):
     return render(request, 'index.html')
+
+def ad_new(request):
+    return render(request, 'ad-new.html')
