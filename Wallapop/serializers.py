@@ -6,15 +6,23 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'groups']
+        fields = ['id', 'username']
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = UserSerializer(many=False, read_only=True)
+    username = serializers.SerializerMethodField()
+    user_id = serializers.SerializerMethodField()
+    ad = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ['comment', 'created_at', 'author']
+        fields = ['id_comment_ad', 'id_comment_user', 'username', 'user_id', 'ad', 'comment', 'created_at']
+
+    def get_username(self, obj):
+        return obj.id_comment_user.username
+
+    def get_user_id(self, obj):
+        return obj.id_comment_user.id
 
 
 class AdSerializer(serializers.ModelSerializer):

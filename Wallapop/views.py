@@ -40,3 +40,6 @@ def register(request):
 
 def ad_new(request):
     return render(request, 'ad-new.html')
+
+def logout(request):
+    return render(request, 'logout.html')

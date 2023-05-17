@@ -73,7 +73,7 @@
             </div>
             {% if user.is_authenticated %}
             <div class="ml-1 mt-3">
-                <a role="button" type="button" class="btn btn-primary" href="{% url 'user-ads' %}">Els meus anuncis
+                <a role="button" type="button" class="btn btn-primary" href="">Els meus anuncis
                     <span class="badge">{{ user.get_user_ad_count }}</span></a>
             </div>
             {% endif %}
