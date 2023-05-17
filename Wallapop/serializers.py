@@ -6,15 +6,15 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'groups']
+        fields = ['username', 'email', 'groups']
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, default=UserSerializer)
+    author = UserSerializer(many=False, read_only=True)
 
     class Meta:
         model = Comment
-        fields = ['id_comment_ad', 'comment', 'created_at', 'user']
+        fields = ['comment', 'created_at', 'author']
 
 
 class AdSerializer(serializers.ModelSerializer):
