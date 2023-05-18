@@ -30,7 +30,7 @@ class AdSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ad
-        fields = ['product_name', 'description', 'price', 'image', 'comments']
+        fields = ['id', 'product_name', 'description', 'price', 'image', 'comments']
 
 
 class UserInfoSerializer(serializers.ModelSerializer):

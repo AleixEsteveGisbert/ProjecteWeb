@@ -127,13 +127,43 @@
             const cardBody = $('<div></div>').addClass('card-body');
             const name = $('<h5></h5>').addClass('card-title').text(ad.product_name);
             const description = $('<p></p>').addClass('card-text').text(ad.description);
-            const price = $('<p></p>').addClass('btn btn-primary').text(ad.price + '€');
+            const price = $('<a></a>').addClass('btn btn-primary').text(ad.price + '€');
+
+            price.on('click', function () {
+                get_ad(ad.id);
+            });
 
             cardBody.append(name, description, price);
             card.append(cardImage, cardBody);
             cards.append(card);
         });
-        container.append(cards)
+        cards1.append(cards);
+        container.append(cards1)
+    }
+
+    function get_ad(adId) {
+        const container = $('#container');
+        container.empty();
+
+        console.log('Mostrando anuncio con ID:', adId);
+
+        $.ajax({
+            url: 'http://127.0.0.1:8000/api/ads/' + adId + '/?format=json',
+            method: 'GET',
+            dataType: 'json',
+            success: function (ad) {
+                console.log('FUNCIONA LO GET');
+                show_ad(ad);
+            },
+            error: function () {
+                console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO DONDE DETE SENTATSTE');
+                $('#content').text("No s'han pogut obtenir les dades de l'anunci");
+            }
+        });
+    }
+
+    function show_ad(ad) {
+        $('#content').text("Vale va tot top estem a la id: " + JSON.stringify(ad));
     }
 </script>
 </html>
