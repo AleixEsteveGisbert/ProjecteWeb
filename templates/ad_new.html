@@ -34,6 +34,7 @@
                     success: function (token) {
                         console.log("Anunci creat correctament");
                         $('#errors').empty().append($('<p></p>').addClass('text-success').text("Anunci creat correctament"));
+                        $('#ad-form')[0].reset();
                     },
                     error: function () {
                         console.log("No s'ha pogut crear l'anunci");
