@@ -17,6 +17,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('logout/', views.logout, name='logout'),
+    path('user/<int:user_id>', views.get_profile, name='profile'),
     path('ads/new', views.ad_new, name='ad-new'),
     path('api/', include(router.urls)),
     path('api-token-auth/', obtain_auth_token),

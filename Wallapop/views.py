@@ -5,8 +5,8 @@ from rest_framework import permissions
 from rest_framework.authtoken.models import Token
 
 from .forms import RegisterForm, LoginForm, AdForm
-from .models import Ad, Comment
-from .serializers import AdSerializer, UserSerializer, CommentSerializer
+from .models import Ad, Comment, UserInfo
+from .serializers import AdSerializer, UserSerializer, CommentSerializer, UserInfoSerializer
 
 
 class AdViewSet(viewsets.ModelViewSet):
@@ -27,9 +27,11 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = User.objects.all().order_by('-date_joined')
+    queryset = User.objects
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
+
+
 
 
 def index(request):
@@ -60,3 +62,6 @@ def ad_new(request):
 
 def logout(request):
     return render(request, 'logout.html')
+
+def get_profile(request, user_id):
+    return render(request, 'profile.html')

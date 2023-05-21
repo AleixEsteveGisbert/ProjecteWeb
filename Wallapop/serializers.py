@@ -2,11 +2,16 @@ from django.contrib.auth.models import User
 from .models import Ad, UserInfo, Comment
 from rest_framework import serializers
 
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = ['user', 'description', 'avatar']
 
 class UserSerializer(serializers.ModelSerializer):
+    userinfo = UserInfoSerializer()
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ['id', 'username', 'userinfo']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -31,9 +36,3 @@ class AdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
         fields = ['id', 'product_name', 'description', 'price', 'image', 'comments']
-
-
-class UserInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserInfo
-        fields = ['user', 'description', 'avatar']
