@@ -2,41 +2,70 @@
 
 {% block content %}
     <h1>Anuncis</h1>
-    <div id="ads-list">
 
-    </div>
-    <div class="row row-cols-1 row-cols-md-3">
-        <div class="col mb-4">
-            <div class="card h-100">
-                <img src="" class="card-img-top" alt="Product image">
-                <div class="card-body">
-                    <h5 class="card-title">TITOL</h5>
-                    <p class="card-text">DESCRIPCIO</p>
-                    <a href="" class="btn btn-primary">100€</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="content"></div>
+
     <script>
         $(document).ready(function () {
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/ads/',
+                url: '/api/ads/',
                 method: 'GET',
                 dataType: 'json',
                 success: function (ads) {
-                    // Manipula los datos obtenidos aquí
                     show(ads);
                 },
                 error: function () {
-                    // Maneja los errores en caso de que la solicitud falle
-                    $('#ads-list').text('Error al obtener los datos de la API.');
+                    console.log("No s'han pogut obtenir les dades");
+                    $('#content').text("No s'han pogut obtenir les dades");
                 }
             });
         });
 
         function show(ads) {
-            // Realiza las operaciones necesarias para mostrar los datos en el elemento HTML
-            $('#ads-list').text(JSON.stringify(ads));
+            const cards = $('<div></div>').addClass('row row-cols-1 row-cols-md-3');
+
+            ads.forEach(function (ad) {
+                const card1 = $('<div></div>').addClass('col mb-4');
+                const card = $('<div></div>').addClass('card h-100');
+                const cardImage = $('<img>').addClass('card-img-top').attr('src', ad.image);
+                const cardBody = $('<div></div>').addClass('card-body');
+                const name = $('<h5></h5>').addClass('card-title').text(ad.product_name);
+                const description = $('<p></p>').addClass('card-text').text(ad.description);
+                const price = $('<a></a>').addClass('btn btn-primary').text(ad.price + '€');
+
+                price.on('click', function () {
+                    get_ad(ad.id);
+                });
+
+                cardBody.append(name, description, price);
+                card.append(cardImage, cardBody);
+                card1.append(card)
+                cards.append(card1);
+            });
+            $('#content').append(cards)
+        }
+
+        function get_ad(adId) {
+            const container = $('#container');
+            container.empty();
+
+
+            $.ajax({
+                url: '/api/ads/' + adId + '/?format=json',
+                method: 'GET',
+                dataType: 'json',
+                success: function (ad) {
+                    show_ad(ad);
+                },
+                error: function () {
+                    console.log("No s'han pogut obtenir les dades de l'anunci");
+                    $('#content').text("No s'han pogut obtenir les dades de l'anunci");
+                }
+            });
+        }
+
+        function show_ad(ad) {
+            $('#content').text("Ad: " + JSON.stringify(ad));
         }
     </script>
 {% endblock %}

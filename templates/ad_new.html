@@ -3,10 +3,45 @@
 {% block content %}
 
     <h2>Crear nou anunci</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-      <a role="button" href="/" class="btn btn-outline-secondary" >Cancelar</a>
-    <button class="btn btn-primary" type="submit">Crear</button>
-  </form>
+    <form method="post" id="ad-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <a role="button" href="/" class="btn btn-outline-secondary">Cancelar</a>
+        <button class="btn btn-primary" type="submit">Crear</button>
+    </form>
+    <div id="errors"></div>
+    <script>
+        $(document).ready(function () {
+            $('#ad-form').on("submit", function (e) {
+                e.preventDefault();
+                let formData = new FormData();
+                formData.append('product_name', $('#id_product_name').val());
+                formData.append('description', $('#id_description').val());
+                formData.append('image', $('#id_image')[0].files[0]);
+                formData.append('price', $('#id_price').val());
+
+                $.ajax({
+                    url: '/api/ads/',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: ({
+                        'Authorization': 'Token ' + localStorage.getItem('token'),
+                        'X-CSRFToken': $.cookie("csrftoken")
+                    }),
+
+                    success: function (token) {
+                        console.log("Anunci creat correctament");
+                        $('#errors').empty().append($('<p></p>').addClass('text-success').text("Anunci creat correctament"));
+                    },
+                    error: function () {
+                        console.log("No s'ha pogut crear l'anunci");
+                        $('#errors').empty().append($('<p></p>').addClass('text-danger').text("No s'ha pogut crear l'anunci"));
+                    }
+                });
+
+            });
+        });
+    </script>
 {% endblock %}

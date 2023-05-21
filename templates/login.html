@@ -1,12 +1,42 @@
 {% extends 'template.html' %}
 
 {% block content %}
-  <div class="container">
-    <h1>Iniciar sessió</h1>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-    </form>
-  </div>
+    <div class="container">
+        <h1>Iniciar sessió</h1>
+        <form method="post" id="login-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" id="login" class="btn btn-primary">Iniciar sesión</button>
+        </form>
+        <div id="errors" class="text-danger"></div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#login-form').on("submit", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/api-token-auth/',
+                    method: 'POST',
+                    data: ({
+                        username: $('#id_username').val(),
+                        password: $('#id_password').val()
+
+                    }),
+                    dataType: 'json',
+                    success: function (token) {
+                        $('#errors').empty();
+                        localStorage.setItem("token", token['token']);
+                        console.log(token['token']);
+                        window.location.replace("/");
+                    },
+                    error: function () {
+                        console.log("No s'ha pogut iniciar sessio");
+                        $('#errors').text("No s'ha pogut iniciar sessio");
+                    }
+                });
+            });
+        });
+
+
+    </script>
 {% endblock %}

@@ -10,6 +10,7 @@
             integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
 </head>
 <body>
@@ -31,35 +32,7 @@
             </ul>
             <!-- Left links -->
 
-            <div class="d-flex align-items-center">
-                {% if user.is_authenticated %}
-
-                    <div class="dropdown text-end">
-                        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ MEDIA_URL }}/{{ user.userinfo.avatar }}" alt="avatar_img" width="32"
-                                 height="32" class="rounded-circle shadow-4-strong">
-                        </a>
-                        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-                            <li><a class="dropdown-item" href="/user/{{ user.id }}">El meu perfil</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{% url 'logout' %}">Tanca la sessió</a></li>
-                        </ul>
-                    </div>
-
-                {% else %}
-
-                    <a role="button" href="{% url 'login' %}" type="button" class="btn btn-outline-primary px-3 me-2">
-                        Entrar
-                    </a>
-                    <a role="button" href="{% url 'register' %}" type="button" class="btn btn-primary me-3">
-                        Registrar-se
-                    </a>
-                {% endif %}
-
-            </div>
+            <div id="left-menu" class="d-flex align-items-center"></div>
         </div>
         <!-- Collapsible wrapper -->
     </div>
@@ -82,7 +55,8 @@
 
         </div>
         <div class="col-sm-9">
-            <div id="content"></div>
+            {% block content %}
+            {% endblock %}
         </div>
     </div>
     <footer>
@@ -102,68 +76,25 @@
 </body>
 <script>
     $(document).ready(function () {
-        $.ajax({
-            url: 'http://127.0.0.1:8000/api/ads/',
-            method: 'GET',
-            dataType: 'json',
-            success: function (ads) {
-                show(ads);
-            },
-            error: function () {
-                $('#content').text("No s'han pogut obtenir les dades");
-            }
-        });
+        let leftMenu = " ";
+        if (localStorage.getItem("token")) {
+            console.log(localStorage.getItem("token"));
+            leftMenu = '<div class="dropdown text-end">' +
+                '<a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">' +
+
+                '<img src="{{ MEDIA_URL }}/{{ user.userinfo.avatar }}" alt="avatar_img" width="32" height="32" class="rounded-circle shadow-4-strong">' +
+                '</a>' +
+                '<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">' +
+                '<li><a class="dropdown-item" href="/user/">El meu perfil</a></li>' +
+                '<li><hr class="dropdown-divider"></li>' +
+                '<li><a class="dropdown-item" href="{% url 'logout' %}">Tanca la sessió</a></li>' +
+                '</ul>' +
+                '</div>';
+        } else {
+            leftMenu = '<a role="button" href="{% url 'login' %}" type="button" class="btn btn-outline-primary px-3 me-2">Entrar</a>' +
+                '<a role="button" href="{% url 'register' %}" type="button" class="btn btn-primary me-3">Registrar-se</a>';
+        }
+        $('#left-menu').append(leftMenu);
     });
-
-    function show(ads) {
-        const container = $('#content');
-        const cards = $('<div></div>').addClass('row row-cols-1 row-cols-md-3');
-        const cards1 = $('<div></div>').addClass('col mb-4');
-
-
-        ads.forEach(function (ad) {
-            const card = $('<div></div>').addClass('card h-100');
-            const cardImage = $('<img>').addClass('card-img-top').attr('src', ad.image);
-            const cardBody = $('<div></div>').addClass('card-body');
-            const name = $('<h5></h5>').addClass('card-title').text(ad.product_name);
-            const description = $('<p></p>').addClass('card-text').text(ad.description);
-            const price = $('<a></a>').addClass('btn btn-primary').text(ad.price + '€');
-
-            price.on('click', function () {
-                get_ad(ad.id);
-            });
-
-            cardBody.append(name, description, price);
-            card.append(cardImage, cardBody);
-            cards.append(card);
-        });
-        cards1.append(cards);
-        container.append(cards1)
-    }
-
-    function get_ad(adId) {
-        const container = $('#container');
-        container.empty();
-
-        console.log('Mostrando anuncio con ID:', adId);
-
-        $.ajax({
-            url: 'http://127.0.0.1:8000/api/ads/' + adId + '/?format=json',
-            method: 'GET',
-            dataType: 'json',
-            success: function (ad) {
-                console.log('FUNCIONA LO GET');
-                show_ad(ad);
-            },
-            error: function () {
-                console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOOOO DONDE DETE SENTATSTE');
-                $('#content').text("No s'han pogut obtenir les dades de l'anunci");
-            }
-        });
-    }
-
-    function show_ad(ad) {
-        $('#content').text("Vale va tot top estem a la id: " + JSON.stringify(ad));
-    }
 </script>
 </html>
