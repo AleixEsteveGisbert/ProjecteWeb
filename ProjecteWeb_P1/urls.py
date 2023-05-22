@@ -22,6 +22,7 @@ urlpatterns = [
     path('ads/new', views.ad_new, name='ad-new'),
     path('api/', include(router.urls)),
     path('api-token-auth/', obtain_auth_token),
+    path('api/retrieve-user', views.retrieve_user, name="retrieve-user"),
 ]
 
 if settings.DEBUG:

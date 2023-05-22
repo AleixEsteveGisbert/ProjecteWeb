@@ -85,7 +85,7 @@
                 '<img src="{{ MEDIA_URL }}/{{ user.userinfo.avatar }}" alt="avatar_img" width="32" height="32" class="rounded-circle shadow-4-strong">' +
                 '</a>' +
                 '<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">' +
-                '<li><a class="dropdown-item" href="/user/">El meu perfil</a></li>' +
+                '<li><a class="dropdown-item" href="/user/'+ logged_user.id + '">El meu perfil</a></li>' +
                 '<li><hr class="dropdown-divider"></li>' +
                 '<li><a class="dropdown-item" href="{% url 'logout' %}">Tanca la sessió</a></li>' +
                 '</ul>' +
