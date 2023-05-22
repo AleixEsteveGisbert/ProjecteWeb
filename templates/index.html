@@ -31,11 +31,7 @@
                 const cardBody = $('<div></div>').addClass('card-body');
                 const name = $('<h5></h5>').addClass('card-title').text(ad.product_name);
                 const description = $('<p></p>').addClass('card-text').text(ad.description);
-                const price = $('<a></a>').addClass('btn btn-primary').text(ad.price + '€');
-
-                price.on('click', function () {
-                    get_ad(ad.id);
-                });
+                const price = $('<a></a>').addClass('btn btn-primary').text(ad.price + '€').attr('href', '/ad/' + ad.id);
 
                 cardBody.append(name, description, price);
                 card.append(cardImage, cardBody);

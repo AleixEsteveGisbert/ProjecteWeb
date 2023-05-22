@@ -4,22 +4,21 @@
     <div class="mt-3">
         <button class="btn btn-secondary" onclick="window.history.back()">Enrere</button>
         {% if ad.id_ad_user_id == user.id %}
-            <a class="btn btn-outline-primary" href="{% url 'ad-edit' ad_id=ad.id %}">Editar</a>
-            <a class="btn btn-outline-danger" href="{% url 'ad-delete' ad_id=ad.id %}">Eliminar</a>
+            <a class="btn btn-outline-primary" href="">Editar</a>
+            <a class="btn btn-outline-danger" href="">Eliminar</a>
         {% endif %}
     </div>
     <div class="content pt-4">
         <div class="row">
             <div class="col">
-                <h1>{{ ad.product_name }}</h1>
-                <img width="300" src="{{ MEDIA_URL }}/{{ ad.image }}" alt="imatge producte">
-                <h2>{{ ad.price }}</h2>
-                <p>{{ ad.description }}</p>
+                <h1 id="product_name"></h1>
+                <img id="img" width="300" src="" alt="imatge producte">
+                <h2 id="price"></h2>
+                <p id="description"></p>
                 <br><br>
             </div>
             <div class="col">
-                <h5 class="">En venta per <a
-                        href="{% url 'profile' user_id=ad.id_ad_user.id %}">{{ ad.id_ad_user.username }}</a></h5>
+                <h5 id="seller" class="">En venta per <a href=""></a></h5>
             </div>
         </div>
 
@@ -39,33 +38,61 @@
             {% endif %}
             <br><br>
 
-            <div class="row">
-                {% if comments %}
-                    {% for c in comments %}
-                        <hr class="hr"/>
-                        <div class="col-sm-2 text-center">
-                            <img src="{{ MEDIA_URL }}/{{ c.id_comment_user.userinfo.avatar }}"
-                                 class="img-circle rounded-circle"
-                                 height="65" width="65" alt="Avatar">
-                        </div>
-                        <div class="col-sm-10">
-                            <h5><a href="{% url 'profile' user_id=c.id_comment_user.id %}">{{ c.id_comment_user }}</a>
-                                <small>
-                                    - {{ c.created_at }}</small></h5>
-                            <p>{{ c.comment }}</p>
-                            <br>
-                        </div>
-                        {% if c.id_comment_user_id == user.id %}
-                            <div>
-                                <a href="{% url 'comment-edit' comment_id=c.id %}" class="font-italic">(editar)</a>
-                                <a href="{% url 'comment-delete' comment_id=c.id %}" class="font-italic">(eliminar)</a>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <p>No hi ha comentaris</p>
-                {% endif %}
-            </div>
+            <div id="comments" class="row"></div>
+
         </div>
     </div>
+    <div id="content"></div>
+    <script>
+        $(document).ready(function () {
+            var url = window.location.href;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+
+            $.ajax({
+                url: '/api/ads/' + id + '/?format=json',
+                method: 'GET',
+                dataType: 'json',
+                success: function (ad) {
+                    show_ad(ad);
+                },
+                error: function () {
+                    console.log("No s'han pogut obtenir les dades de l'anunci");
+                    $('#content').text("No s'han pogut obtenir les dades de l'anunci");
+                }
+            });
+        });
+
+        function show_ad(ad) {
+            $('#product_name').text(ad.product_name)
+            $('#img').attr('src', ad.image)
+            $('#price').text(ad.price)
+            $('#description').text(ad.description)
+            $('#seller').text("En venta per " + ad.id_ad_user.username)
+
+            let text = "";
+            if (!ad.comments) {
+                text = "<p>No hi ha comentaris</p>";
+            } else {
+                ad.comments.forEach(function (comment) {
+                    text = '<hr class="hr"/>' +
+                        '<div class="col-sm-2 text-center">' +
+                        '<img src="' + comment.id_comment_user.userinfo.avatar + '" class="img-circle rounded-circle" height="65" width="65" alt="Avatar"> </div>' +
+                        '<div class="col-sm-10">' +
+                        '<h5><a href="/user/' + comment.id_comment_user.id + ' ">' + comment.username + '</a>' +
+                        '<small> - ' + comment.created_at + '</small></h5>' +
+                        '<p>' + comment.comment + '</p>' +
+                        '<br>' +
+                        '</div>' +
+                        '<div>' +
+                        '<a href="" class="font-italic">(editar)</a>' +
+                        '<a href="" class="font-italic">(eliminar)</a>' +
+                        '</div>';
+
+                    $('#comments').append(text);
+                });
+            }
+
+            //$('#content').text("Ad: " + JSON.stringify(ad));
+        }
+    </script>
 {% endblock %}

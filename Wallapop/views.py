@@ -65,3 +65,6 @@ def logout(request):
 
 def get_profile(request, user_id):
     return render(request, 'profile.html')
+
+def get_ad(request, ad_id):
+    return render(request, 'ad_show.html')

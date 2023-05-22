@@ -17,11 +17,12 @@ class UserSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
     user_id = serializers.SerializerMethodField()
+    id_comment_user = UserSerializer()
     ad = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ['id_comment_ad', 'id_comment_user', 'username', 'user_id', 'ad', 'comment', 'created_at']
+        fields = ['id_comment_ad', 'id_comment_user', 'username', 'user_id', 'ad', 'comment', 'created_at', 'id_comment_user']
 
     def get_username(self, obj):
         return obj.id_comment_user.username
@@ -30,9 +31,11 @@ class CommentSerializer(serializers.ModelSerializer):
         return obj.id_comment_user.id
 
 
+
 class AdSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
+    id_ad_user = UserSerializer()
 
     class Meta:
         model = Ad
-        fields = ['id', 'product_name', 'description', 'price', 'image', 'comments']
+        fields = ['id', 'product_name', 'description', 'price', 'image', 'id_ad_user', 'comments']
