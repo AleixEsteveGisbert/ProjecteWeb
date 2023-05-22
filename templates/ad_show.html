@@ -87,9 +87,9 @@
             //Botons editar i eliminar
             if (logged_user) {
                 if (logged_user.id == ad.id_ad_user.id) {
-                let aux = '<a class="btn btn-outline-primary" href="">Editar</a>' + '<a class="btn btn-outline-danger" href="">Eliminar</a>';
-                $('#edit').append(aux);
-            }
+                    let aux = '<a class="btn btn-outline-primary" href="">Editar</a>' + '<a class="btn btn-outline-danger" href="">Eliminar</a>';
+                    $('#edit').append(aux);
+                }
             }
 
 
@@ -109,12 +109,15 @@
                         '<p>' + comment.comment + '</p>' +
                         '<br>' +
                         '</div>' +
-                        '<div>' +
-                        '<a href="" class="font-italic">(editar)</a>' +
-                        '<a href="" class="font-italic">(eliminar)</a>' +
+                        '<div id="edit">' +
                         '</div>';
 
+                    let aux = '<a href="" class="font-italic">(editar)</a>' +
+                        '<a href="" class="font-italic">(eliminar)</a>';
+
                     $('#comments').append(text);
+                    $('#edit').append(aux);
+
                 })
             )
 
