@@ -70,9 +70,10 @@
             $('#seller').text("En venta per " + ad.id_ad_user.username)
 
             let text = "";
-            if (!ad.comments) {
-                text = "<p>No hi ha comentaris</p>";
-            } else {
+
+            if (ad.comments.length == 0) {
+                $('#comments').append('<p>No hi ha comentaris.</p>');
+            } else (
                 ad.comments.forEach(function (comment) {
                     text = '<hr class="hr"/>' +
                         '<div class="col-sm-2 text-center">' +
@@ -89,8 +90,9 @@
                         '</div>';
 
                     $('#comments').append(text);
-                });
-            }
+                })
+            )
+
 
             //$('#content').text("Ad: " + JSON.stringify(ad));
         }
