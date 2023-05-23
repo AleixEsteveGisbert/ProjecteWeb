@@ -41,22 +41,25 @@
     <div id="content"></div>
     <script>
         var logged_user;
-        $.ajax({
-            url: 'http://127.0.0.1:8000/api/retrieve-user',
-            method: 'GET',
-            async: false,
-            headers: {
-                'Authorization': 'Token ' + localStorage.getItem('token')
-            },
-            success: function (response) {
-                logged_user = response
-                console.log(response)
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                // Handle the error
-                console.error('Error:', errorThrown);
-            }
-        });
+        if (localStorage.getItem('token')) {
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/retrieve-user',
+                method: 'GET',
+                async: false,
+                headers: {
+                    'Authorization': 'Token ' + localStorage.getItem('token')
+                },
+                success: function (response) {
+                    logged_user = response
+                    console.log(response)
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle the error
+                    console.error('Error:', errorThrown);
+                }
+            });
+        }
+
 
         $(document).ready(function () {
             var url = window.location.href;
@@ -109,14 +112,21 @@
                         '<p>' + comment.comment + '</p>' +
                         '<br>' +
                         '</div>' +
-                        '<div id="edit">' +
-                        '</div>';
+                        '<div>';
 
                     let aux = '<a href="" class="font-italic">(editar)</a>' +
                         '<a href="" class="font-italic">(eliminar)</a>';
 
-                    $('#comments').append(text);
-                    $('#edit').append(aux);
+                    if (logged_user) {
+                        if (logged_user.id == comment.id_comment_user.id) {
+                            $('#comments').append(text + aux + "</div>");
+                        } else {
+                            $('#comments').append(text + "</div>");
+                        }
+                    } else {
+                        $('#comments').append(text + "</div>");
+                    }
+
 
                 })
             )
