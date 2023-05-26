@@ -11,6 +11,26 @@
     </form>
     <div id="errors"></div>
     <script>
+        var logged_user;
+        if (localStorage.getItem('token')) {
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/retrieve-user',
+                method: 'GET',
+                async: false,
+                headers: {
+                    'Authorization': 'Token ' + localStorage.getItem('token')
+                },
+                success: function (response) {
+                    logged_user = response
+                    console.log(response)
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle the error
+                    console.error('Error:', errorThrown);
+                }
+            });
+        }
+
         $(document).ready(function () {
             $('#ad-form').on("submit", function (e) {
                 e.preventDefault();
@@ -19,6 +39,8 @@
                 formData.append('description', $('#id_description').val());
                 formData.append('image', $('#id_image')[0].files[0]);
                 formData.append('price', $('#id_price').val());
+                formData.append('id_ad_user', logged_user.id);
+
 
                 $.ajax({
                     url: '/api/ads/',

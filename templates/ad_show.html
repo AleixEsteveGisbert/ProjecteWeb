@@ -20,18 +20,16 @@
 
         <div class="col-sm-9">
             <hr class="hr"/>
-            {% if user.is_authenticated %}
-                <h4>Afegeix un comentari:</h4>
-                <form method="POST" role="form">
-                    <div class="form-group">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                    </div>
-                    <button type="submit" class="btn btn-outline-primary">Comentar</button>
-                </form>
-            {% else %}
-                <h5><a href="{% url 'login' %}">Inicia sessió per a afegir un comentari.</a></h5>
-            {% endif %}
+            <h4>Afegeix un comentari:</h4>
+            <form method="POST" role="form" id="comment-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_comment">Comentari:</label>
+                    <textarea name="comment" id="id_comment" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Comentar</button>
+            </form>
+            <h5 id="login-link"><a href="{% url 'login' %}">Inicia sessió per a afegir un comentari.</a></h5>
             <br><br>
 
             <div id="comments" class="row"></div>
@@ -76,6 +74,42 @@
                     console.log("No s'han pogut obtenir les dades de l'anunci");
                     $('#content').text("No s'han pogut obtenir les dades de l'anunci");
                 }
+            });
+
+            if (logged_user) {
+                $('#comment-form').show(); // Mostrar el formulario de comentario
+                $('#login-link').hide(); // Ocultar el enlace de inicio de sesión
+            } else {
+                $('#comment-form').hide(); // Ocultar el formulario de comentario
+                $('#login-link').show(); // Mostrar el enlace de inicio de sesión
+            }
+
+            $('#comment-form').on("submit", function (e) {
+                e.preventDefault();
+                let formData = new FormData();
+                formData.append('comment', $('#id_comment').val());
+                formData.append('id_comment_ad', 7);
+                formData.append('id_comment_user', 5);
+
+                alert(JSON.stringify(formData));
+
+                $.ajax({
+                    url: '/api/comments/',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'Authorization': 'Token ' + localStorage.getItem('token'),
+                        'X-CSRFToken': $.cookie("csrftoken")
+                    },
+                    success: function (response) {
+                        window.location.reload();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                    }
+                });
             });
         });
 
