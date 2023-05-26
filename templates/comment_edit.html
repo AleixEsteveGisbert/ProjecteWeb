@@ -59,7 +59,6 @@
             let formData = new FormData();
             formData.append('comment', $('#id_comment').val());
 
-
             $.ajax({
                 url: '/api/comments/' + id + '/',
                 method: 'PUT',
