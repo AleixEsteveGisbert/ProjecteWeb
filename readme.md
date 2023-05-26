@@ -6,44 +6,47 @@ This repository contains the source code for the application. Below are the main
 
 The API endpoints provide access to various resources in the application.
 
-### Product Endpoint
+### Ad Endpoint
 
-- URL: `/api/product/`
+- URL: `/api/ads/`
 - Method: GET
-- Description: Retrieves a list of products.
+- Description: Retrieves a list of all ads.
 - Permissions: AllowAny
-
-### User Endpoint
-
-- URL: `/api/user/`
-- Method: GET
-- Description: Retrieves a list of users.
+---
+- URL: `/api/ads/`
+- Method: POST
+- Description: Creates a new ad.
+- Permissions: AllowAny
+---
+- URL: `/api/ads/<id_ad>/`
+- Method: PUT
+- Description: Updates an ad.
 - Permissions: IsAuthenticated
 
-## Web Interface
+### Comment Endpoint
 
-The web interface allows users to interact with the application using a graphical user interface.
+- URL: `/api/coments/`
+- Method: POST
+- Description: Creates a new comment.
+- Permissions: IsAuthenticated
+---
+- URL: `/api/coments/<id_comment>/`
+- Method: PUT
+- Description: Updates a comment.
+- Permissions: IsAuthenticated
 
-### Home Page
-
-- URL: `/`
-- Description: Displays the home page of the application.
+### Authentication Endpoint
+- URL: `/api/users/`
+- Method: POST
+- Description: Creates a new user.
 - Permissions: AllowAny
-
-### Product Details Page
-
-- URL: `/product/{product_id}`
-- Description: Displays the details of a specific product.
+---
+- URL: `/api-token-auth/`
+- Method: GET
+- Description: Generates a token for the user
 - Permissions: AllowAny
-
-### User Profile Page
-
-- URL: `/user/{user_id}/profile`
-- Description: Displays the profile of a specific user.
-- Permissions: AllowAny
-
-### Create Product Page
-
-- URL: `/product/create`
-- Description: Allows authenticated users to create a new product.
+---
+- URL: `/api/retrieve-user`
+- Method: GET
+- Description: Gets the info of a user using his token
 - Permissions: IsAuthenticated
