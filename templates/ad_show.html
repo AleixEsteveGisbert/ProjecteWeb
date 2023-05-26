@@ -90,10 +90,30 @@
             //Botons editar i eliminar
             if (logged_user) {
                 if (logged_user.id == ad.id_ad_user.id) {
-                    let aux = '<a class="btn btn-outline-primary" href="/ad/'+ ad.id +'/edit">Editar</a>' + '<a class="btn btn-outline-danger" href="">Eliminar</a>';
+                    let aux = '<a class="btn btn-outline-primary" href="/ad/' + ad.id + '/edit">Editar</a>' + '<a class="btn btn-outline-danger" href="" id="delete-button">Eliminar</a>';
                     $('#edit').append(aux);
                 }
             }
+
+            //Eliminar
+            $('#delete-button').click(function () {
+                if (confirm('¿Estas segur de que vols eliminar aquest anunci?')) {
+                    $.ajax({
+                        url: '/api/ads/' + ad.id + '/',
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': 'Token ' + localStorage.getItem('token')
+                        },
+                        success: function (response) {
+                            console.log('Anunci eliminat');
+                            window.location.href = '/';
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.error('Error:', errorThrown);
+                        }
+                    });
+                }
+            });
 
 
             //Comments
