@@ -1,10 +1,83 @@
 {% extends "template.html" %}
 {% block content %}
     <h2>Editar comentari</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-      <a role="button" onclick="window.history.back()" class="btn btn-outline-secondary" >Cancelar</a>
-    <button class="btn btn-primary" type="submit">Guardar</button>
-  </form>
+    <form method="post" role="form" id="comment-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_comment">Comentario:</label>
+            <textarea name="comment" id="id_comment" class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Comentar</button>
+    </form>
+    <script>
+        var logged_user;
+        if (localStorage.getItem('token')) {
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/retrieve-user',
+                method: 'GET',
+                async: false,
+                headers: {
+                    'Authorization': 'Token ' + localStorage.getItem('token')
+                },
+                success: function (response) {
+                    logged_user = response
+                    console.log(response)
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle the error
+                    console.error('Error:', errorThrown);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            var url = window.location.href;
+            var id = url.split("/")[4];
+
+            $.ajax({
+                url: '/api/comments/' + id + '/?format=json',
+                method: 'GET',
+                dataType: 'json',
+                success: function (comment) {
+                    fillInputs(comment);
+                },
+                error: function () {
+                    console.log("No s'han pogut obtenir les dades de l'anunci");
+                    $('#content').text("No s'han pogut obtenir les dades de l'anunci");
+                }
+            });
+        });
+
+        function fillInputs(comment) {
+            $('#id_comment').text(comment.comment)
+        }
+
+        $('#comment-form').on("submit", function (e) {
+            e.preventDefault();
+            var id = window.location.href.split("/")[4];
+
+            let formData = new FormData();
+            formData.append('comment', $('#id_comment').val());
+
+
+            $.ajax({
+                url: '/api/comments/' + id + '/',
+                method: 'PUT',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'Authorization': 'Token ' + localStorage.getItem('token'),
+                    'X-CSRFToken': $.cookie("csrftoken")
+                },
+                success: function (response) {
+                    window.location.href = document.referrer;
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
+                }
+            });
+        });
+
+    </script>
 {% endblock %}

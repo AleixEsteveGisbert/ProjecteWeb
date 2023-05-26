@@ -21,6 +21,7 @@ urlpatterns = [
     path('ad/<int:ad_id>', views.get_ad, name='ad'),
     path('ad/<int:ad_id>/edit', views.ad_edit, name='ad-edit'),
     path('ads/new', views.ad_new, name='ad-new'),
+    path('comments/<int:comment_id>/edit', views.comment_edit, name='comment-edit'),
     path('api/', include(router.urls)),
     path('api-token-auth/', obtain_auth_token),
     path('api/retrieve-user', views.retrieve_user, name="retrieve-user"),

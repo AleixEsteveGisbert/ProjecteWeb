@@ -81,6 +81,9 @@ def ad_edit(request, ad_id):
     form = AdForm();
     return render(request, 'ad_edit.html', {'form': form})
 
+def comment_edit(request, comment_id):
+    return render(request, 'comment_edit.html')
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
