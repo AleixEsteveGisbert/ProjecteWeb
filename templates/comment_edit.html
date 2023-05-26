@@ -11,6 +11,7 @@
     </form>
     <script>
         var logged_user;
+        var id_comment_ad;
         if (localStorage.getItem('token')) {
             $.ajax({
                 url: 'http://127.0.0.1:8000/api/retrieve-user',
@@ -50,6 +51,7 @@
 
         function fillInputs(comment) {
             $('#id_comment').text(comment.comment)
+            id_comment_ad = comment.id_comment_ad;
         }
 
         $('#comment-form').on("submit", function (e) {
@@ -58,6 +60,7 @@
 
             let formData = new FormData();
             formData.append('comment', $('#id_comment').val());
+            formData.append('id_comment_ad', id_comment_ad);
 
             $.ajax({
                 url: '/api/comments/' + id + '/',
