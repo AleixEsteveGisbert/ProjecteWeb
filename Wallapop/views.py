@@ -26,6 +26,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permissions_classes = []
 
+    def perform_create(self, serializer):
+        serializer.save(id_comment_user_id=self.request.user.id)
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """

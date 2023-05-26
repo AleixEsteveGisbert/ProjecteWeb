@@ -39,6 +39,7 @@
     <div id="content"></div>
     <script>
         var logged_user;
+        var adObj;
         if (localStorage.getItem('token')) {
             $.ajax({
                 url: 'http://127.0.0.1:8000/api/retrieve-user',
@@ -68,6 +69,7 @@
                 method: 'GET',
                 dataType: 'json',
                 success: function (ad) {
+                    adObj = ad;
                     show_ad(ad);
                 },
                 error: function () {
@@ -77,21 +79,19 @@
             });
 
             if (logged_user) {
-                $('#comment-form').show(); // Mostrar el formulario de comentario
-                $('#login-link').hide(); // Ocultar el enlace de inicio de sesión
+                $('#comment-form').show();
+                $('#login-link').hide();
             } else {
-                $('#comment-form').hide(); // Ocultar el formulario de comentario
-                $('#login-link').show(); // Mostrar el enlace de inicio de sesión
+                $('#comment-form').hide();
+                $('#login-link').show();
             }
 
             $('#comment-form').on("submit", function (e) {
                 e.preventDefault();
                 let formData = new FormData();
                 formData.append('comment', $('#id_comment').val());
-                formData.append('id_comment_ad', 7);
-                formData.append('id_comment_user', 5);
-
-                alert(JSON.stringify(formData));
+                formData.append('id_comment_ad', parseInt(adObj.id));
+                formData.append('id_comment_user', logged_user);
 
                 $.ajax({
                     url: '/api/comments/',
@@ -187,7 +187,7 @@
                         '<div>';
 
                     //let aux = '<a href="" class="font-italic">(editar)</a>' + '<a href="" class="font-italic">(eliminar)</a>';
-                    let aux = '<a href="" class="font-italic">(editar)</a>' +
+                    let aux = '<button class="btn btn-outline" href="#">Editar</button>' +
                         '<button class="btn btn-outline-danger delete-comment-btn" comment-id="' + comment.id + '">Eliminar</button>';
 
 
