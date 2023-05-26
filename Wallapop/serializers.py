@@ -22,7 +22,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['id_comment_ad', 'id_comment_user', 'username', 'user_id', 'ad', 'comment', 'created_at', 'id_comment_user']
+        fields = ['id', 'id_comment_ad', 'id_comment_user', 'username', 'user_id', 'ad', 'comment', 'created_at', 'id_comment_user']
 
     def get_username(self, obj):
         return obj.id_comment_user.username

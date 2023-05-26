@@ -79,6 +79,25 @@
             });
         });
 
+        function deleteComment() {
+            let commentId = $(this).attr('comment-id');
+
+            if (confirm('Segur que vols eliminar aquest comentari?')) {
+                $.ajax({
+                    url: '/api/comments/' + commentId + '/',
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Token ' + localStorage.getItem('token')
+                    },
+                    success: function () {
+                        window.location.reload();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                    }
+                });
+            }
+        }
 
         function show_ad(ad) {
             $('#product_name').text(ad.product_name)
@@ -97,7 +116,7 @@
 
             //Eliminar
             $('#delete-button').click(function () {
-                if (confirm('¿Estas segur de que vols eliminar aquest anunci?')) {
+                if (confirm('Segur que vols eliminar aquest anunci?')) {
                     $.ajax({
                         url: '/api/ads/' + ad.id + '/',
                         method: 'DELETE',
@@ -114,7 +133,6 @@
                     });
                 }
             });
-
 
             //Comments
             let text = "";
@@ -134,8 +152,10 @@
                         '</div>' +
                         '<div>';
 
+                    //let aux = '<a href="" class="font-italic">(editar)</a>' + '<a href="" class="font-italic">(eliminar)</a>';
                     let aux = '<a href="" class="font-italic">(editar)</a>' +
-                        '<a href="" class="font-italic">(eliminar)</a>';
+                        '<button class="btn btn-outline-danger delete-comment-btn" comment-id="' + comment.id + '">Eliminar</button>';
+
 
                     if (logged_user) {
                         if (logged_user.id == comment.id_comment_user.id) {
@@ -151,7 +171,7 @@
                 })
             )
 
-
+            $(document).on('click', '.delete-comment-btn', deleteComment);
             //$('#content').text("Ad: " + JSON.stringify(ad));
         }
     </script>
