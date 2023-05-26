@@ -74,6 +74,11 @@ def get_ad(request, ad_id):
     return render(request, 'ad_show.html')
 
 
+def ad_edit(request, ad_id):
+    form = AdForm();
+    return render(request, 'ad_edit.html', {'form': form})
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def retrieve_user(request):

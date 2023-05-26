@@ -90,7 +90,7 @@
             //Botons editar i eliminar
             if (logged_user) {
                 if (logged_user.id == ad.id_ad_user.id) {
-                    let aux = '<a class="btn btn-outline-primary" href="">Editar</a>' + '<a class="btn btn-outline-danger" href="">Eliminar</a>';
+                    let aux = '<a class="btn btn-outline-primary" href="/ad/'+ ad.id +'/edit">Editar</a>' + '<a class="btn btn-outline-danger" href="">Eliminar</a>';
                     $('#edit').append(aux);
                 }
             }
